@@ -1,38 +1,29 @@
 Require Import String. 
-Add Rec LoadPath "../src/" as Timing.  
+Add Rec LoadPath "../src/" as Output.  
 Add ML Path "../src/". 
-Declare ML Module "timing_plugin". 
-             
-Ltac count_ltac n m :=
-  match n with
-    | 0 => m
-    | S ?n => let m := constr:(S m) in count_ltac n m
-  end.
-Ltac test :=
-  start_timer "my_test";
-  let x := fresh in let a := count_ltac 100 100 in set (x := a);
-  stop_timer "my_test". 
 
-Goal True.
-  Clear Timing Profile. 
+Require  Dump. 
 
-  start_timer "global". 
-  Print Timing Profile. 
-  test. 
-  Print Timing Profile. 
-  do 3 test. 
-  Print Timing Profile. 
-  do 3 test. 
-  Print Timing Profile. 
-  do 10 test. 
-  Print Timing Profile. 
-  stop_timer "global". 
-  Print Timing Profile. 
-  Clear Timing Profile. 
-Abort.
 
-Require Import Omega.
-Goal forall n m , n + m + n <= n + m + n + m. 
-intros. time "omega" omega. 
-Print Timing Profile. 
-Qed. 
+Section t. 
+  Require Import ZArith. 
+  Open Scope Z_scope.
+  Definition seed := 50.
+  Definition a := 31415821.
+  Definition c := 1.
+  Definition max := 100000000.
+
+  Definition next z := (c+a*z) mod max.
+
+  Fixpoint mk_list z (acc : list Z) (n : nat) :=
+    match n with
+      | O => (z, acc)
+      | S n0 => mk_list (next z) (z::acc) n0
+    end.
+  Definition mk_randoms n := snd (mk_list seed nil n).
+  Time Eval vm_compute in mk_randoms 1000.
+End t. 
+
+Definition out := mk_randoms 10000. 
+
+Output out as "foo.dump". 

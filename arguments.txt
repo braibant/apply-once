@@ -1,4 +1,0 @@
--R src Timing
-src/timing_plugin.ml4
-src/Timing.v
-test-suite/example.v
