@@ -1,17 +1,4 @@
-An example of Coq plugin that outputs the content of a global
-definition in a file. 
-
-- This plugin defines a new vernacular command [Output foo as "bar"]
-  which normalizes [foo], and outputs it in the file named "bar". The
-  normalization is done using [vm_compute], and [foo] must be a global
-  definition. (That is, [Output (1+1) as "bar"] would not work.)
-
-- The final pretty-printing is done using the current state of the
-  pretty-printing machine: opening the right scopes, and defining
-  notations may make a huge difference in terms of what the output
-  looks like. 
-
- 
+An example of Coq plugin that applies a tactic to each hypothesis. 
 
 
 
