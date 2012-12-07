@@ -87,4 +87,14 @@ of the first match: http://adam.chlipala.net/cpdt/html/Match.html *)
                       end).     (* 1.5 *)
   Admitted. 
 
+  Goal test 12. compute; intros. 
+  Time inverse_P (@nil nat).      (* 170 s *)
+  Restart. 
+  compute; intros. 
+  Time iter_tac (fun x => 
+                      match type of x with 
+                          | P _ => inversion x
+                          | _ => idtac
+                      end).     (* 12s *)
+  
 End u.   
